@@ -1,0 +1,48 @@
+
+[splash#]
+logo
+---
+not login
+==> login
+already login
+==> posts
+
+
+[login#]
++ access token form
++ team name form
+---
+login
+===> posts
+
+[posts#]
++ posts list
++ new post button
+---
+click new post button
+==> new
+select post
+==> post
+
+[post]
++ edit post button
++ comments button
+---
+click edit post button
+={edit}=> post
+click comments button
+==> comments
+
+
+[new]
++ save button
+---
+click save
+==> post
+
+
+[comments]
++ new comment button
+---
+click new comment button
+={new}=> comments
