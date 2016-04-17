@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="com.kgmyshin.esa.viewmodel.PostsViewModel" />
+            type="com.kgmyshin.esa.presentation.viewmodel.PostsViewModel" />
 
     </data>
 

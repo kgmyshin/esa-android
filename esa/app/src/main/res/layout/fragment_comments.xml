@@ -3,12 +3,6 @@
 
     <data>
 
-        <import type="com.kgmyshin.esa.dto.Page" />
-
-        <import type="com.kgmyshin.esa.dto.Comment" />
-
-        <import type="java.util.List" />
-
 
     </data>
 

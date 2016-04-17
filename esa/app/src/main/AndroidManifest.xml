@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".activity.SplashActivity"
+            android:name=".presentation.activity.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,19 +20,19 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.LoginActivity"
+            android:name=".presentation.activity.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.PostsActivity"
+            android:name=".presentation.activity.PostsActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.NewPostActivity"
+            android:name=".presentation.activity.NewPostActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.PostActivity"
+            android:name=".presentation.activity.PostActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.CommentsActivity"
+            android:name=".presentation.activity.CommentsActivity"
             android:exported="false" />
 
     </application>

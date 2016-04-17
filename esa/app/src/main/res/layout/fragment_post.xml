@@ -6,7 +6,7 @@
 
         <variable
             name="post"
-            type="com.kgmyshin.esa.dto.Post" />
+            type="com.kgmyshin.esa.domain.dto.Post" />
 
     </data>
 

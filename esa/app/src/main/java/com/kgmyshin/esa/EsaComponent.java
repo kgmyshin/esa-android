@@ -5,16 +5,16 @@
 
 package com.kgmyshin.esa;
 
-import com.kgmyshin.esa.command.CommandModule;
-import com.kgmyshin.esa.command.CommandRouter;
-import com.kgmyshin.esa.data.DataModule;
+import com.kgmyshin.esa.domain.command.CommandRouter;
+import com.kgmyshin.esa.infra.data.DataModule;
+import com.kgmyshin.esa.presentation.PresentationComponent;
 
 import javax.inject.Singleton;
 
 import dagger.Component;
 
 @Singleton
-@Component(modules = {DataModule.class, CommandModule.class, ApplicationModule.class})
+@Component(modules = {DataModule.class, ApplicationModule.class})
 public interface EsaComponent extends PresentationComponent {
     CommandRouter router();
 }

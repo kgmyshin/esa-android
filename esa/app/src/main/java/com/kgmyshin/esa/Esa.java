@@ -7,8 +7,7 @@ package com.kgmyshin.esa;
 
 import android.app.Application;
 
-import com.kgmyshin.esa.command.CommandModule;
-import com.kgmyshin.esa.data.DataModule;
+import com.kgmyshin.esa.infra.data.DataModule;
 
 public class Esa extends Application {
 
@@ -20,7 +19,6 @@ public class Esa extends Application {
         component = DaggerEsaComponent.builder()
                 .applicationModule(new ApplicationModule(this))
                 .dataModule(new DataModule())
-                .commandModule(new CommandModule())
                 .build();
         component.router().start();
     }
