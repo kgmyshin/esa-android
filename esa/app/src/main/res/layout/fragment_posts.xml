@@ -1,25 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
-        <import type="com.kgmyshin.esa.dto.Page" />
-
-        <import type="com.kgmyshin.esa.dto.Post" />
-
-        <import type="java.util.List" />
-
         <variable
-            name="posts"
-            type="List&lt;Page&lt;Post>>" />
+            name="viewModel"
+            type="com.kgmyshin.esa.viewmodel.PostsViewModel" />
 
     </data>
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-    </LinearLayout>
+        <ListView
+            android:id="@+id/post_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:posts="@{viewModel.posts}" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/new_post_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:layout_marginBottom="@dimen/margin"
+            android:layout_marginRight="@dimen/margin"
+            android:src="@drawable/ic_create_white_18dp"
+            app:fabSize="normal" />
+    </FrameLayout>
+
 
 </layout>

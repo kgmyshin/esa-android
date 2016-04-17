@@ -15,7 +15,7 @@ public final class PostResponse {
     @SerializedName("number")
     private int number;
     @SerializedName("name")
-    private int name;
+    private String name;
     @SerializedName("full_name")
     private String fullName;
     @SerializedName("wip")
@@ -65,7 +65,7 @@ public final class PostResponse {
         return number;
     }
 
-    public int getName() {
+    public String getName() {
         return name;
     }
 

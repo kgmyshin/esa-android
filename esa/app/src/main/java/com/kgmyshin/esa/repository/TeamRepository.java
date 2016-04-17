@@ -5,31 +5,25 @@
 
 package com.kgmyshin.esa.repository;
 
-import com.kgmyshin.esa.data.api.v1.IApiClient;
-import com.kgmyshin.esa.data.api.v1.response.TeamResponse;
-import com.kgmyshin.esa.dto.Team;
+import com.kgmyshin.esa.data.pref.TeamPreferences;
 
 import javax.inject.Inject;
 
-import rx.Observable;
-import rx.functions.Func1;
-
 public class TeamRepository {
 
-    private IApiClient client;
+    private TeamPreferences teamPreferences;
 
     @Inject
-    public TeamRepository(IApiClient client) {
-        this.client = client;
+    public TeamRepository(TeamPreferences teamPreferences) {
+        this.teamPreferences = teamPreferences;
     }
 
-    public Observable<Team> findByName(String name) {
-        return client.findTeam(name).map(new Func1<TeamResponse, Team>() {
-            @Override
-            public Team call(TeamResponse teamResponse) {
-                return new Team(teamResponse.getName());
-            }
-        });
+    public void save(String name) {
+        teamPreferences.putName(name);
+    }
+
+    public String find() {
+        return teamPreferences.getName();
     }
 
 }

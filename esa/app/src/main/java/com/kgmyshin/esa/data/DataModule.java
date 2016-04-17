@@ -10,6 +10,7 @@ import android.app.Application;
 import com.kgmyshin.esa.data.api.v1.ApiClientFactory;
 import com.kgmyshin.esa.data.api.v1.IApiClient;
 import com.kgmyshin.esa.data.pref.AccessTokenPreferences;
+import com.kgmyshin.esa.data.pref.TeamPreferences;
 
 import javax.inject.Singleton;
 
@@ -23,6 +24,12 @@ public final class DataModule {
     @Provides
     public AccessTokenPreferences provideAccessTokenPreferences(Application application) {
         return new AccessTokenPreferences(application);
+    }
+
+    @Singleton
+    @Provides
+    public TeamPreferences provideTeamPreferences(Application application) {
+        return new TeamPreferences(application);
     }
 
     @Singleton

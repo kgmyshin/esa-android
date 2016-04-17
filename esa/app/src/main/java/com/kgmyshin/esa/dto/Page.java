@@ -7,7 +7,7 @@ package com.kgmyshin.esa.dto;
 
 import java.util.List;
 
-public abstract class Page<T> {
+public class Page<T> {
 
     private final int page;
     private final List<T> items;

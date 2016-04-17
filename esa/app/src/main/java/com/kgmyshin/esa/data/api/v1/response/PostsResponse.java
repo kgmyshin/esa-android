@@ -11,12 +11,14 @@ import java.util.List;
 
 public final class PostsResponse {
 
+    private static final int NONE_PAGE = -1;
+
     @SerializedName("posts")
     private List<PostResponse> posts;
     @SerializedName("prev_page")
-    private int prevPage;
+    private int prevPage = NONE_PAGE;
     @SerializedName("next_page")
-    private int nextPage;
+    private int nextPage = NONE_PAGE;
     @SerializedName("total_count")
     private int totalCount;
 

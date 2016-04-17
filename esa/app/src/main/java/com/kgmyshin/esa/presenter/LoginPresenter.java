@@ -5,8 +5,6 @@
 
 package com.kgmyshin.esa.presenter;
 
-import android.widget.Toast;
-
 import com.kgmyshin.esa.command.LoginCommand;
 import com.kgmyshin.esa.fragment.LoginFragment;
 
@@ -52,7 +50,7 @@ public class LoginPresenter {
     public void receive(LoginCommand.SuccessLoginEvent event) {
         eventBus.removeStickyEvent(event);
         fragment.dismissLoading();
-        Toast.makeText(fragment.getContext(), "成功", Toast.LENGTH_SHORT).show();
+        fragment.moveToPosts();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)

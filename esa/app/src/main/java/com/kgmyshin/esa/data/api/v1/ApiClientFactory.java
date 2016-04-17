@@ -29,16 +29,20 @@ public final class ApiClientFactory {
 
     private static final String BASE_URL = "https://api.esa.io";
 
-    public IApiClient createClient() {
-        return createRetrofit().create(IApiClient.class);
+    public IApiClient createClient(String accessToken) {
+        return createRetrofit(accessToken).create(IApiClient.class);
     }
 
-    private Retrofit createRetrofit() {
+    public IApiClient createClient() {
+        return createRetrofit(preferences.getAccessToken()).create(IApiClient.class);
+    }
+
+    private Retrofit createRetrofit(final String accessToken) {
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss+09:00").create();
         OkHttpClient client = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
             @Override
             public Response intercept(Chain chain) throws IOException {
-                Request request = chain.request().newBuilder().header("Authorization", "Bearer " + preferences.getAccessToken()).build();
+                Request request = chain.request().newBuilder().header("Authorization", "Bearer " + accessToken).build();
                 return chain.proceed(request);
             }
         }).build();

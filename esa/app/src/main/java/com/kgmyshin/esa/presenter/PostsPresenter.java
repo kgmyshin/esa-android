@@ -5,12 +5,43 @@
 
 package com.kgmyshin.esa.presenter;
 
-import org.greenrobot.eventbus.EventBus;
+import com.kgmyshin.esa.fragment.PostsFragment;
+import com.kgmyshin.esa.viewmodel.PostsViewModel;
 
 import javax.inject.Inject;
 
 public class PostsPresenter {
 
+    private PostsViewModel viewModel;
+    private PostsFragment fragment;
+
     @Inject
-    EventBus eventBus;
+    public PostsPresenter(PostsViewModel viewModel) {
+        this.viewModel = viewModel;
+    }
+
+    public void setFragment(PostsFragment fragment) {
+        this.fragment = fragment;
+    }
+
+    public void onCreateView() {
+        fragment.setViewModel(viewModel);
+    }
+
+    public void onResume() {
+        viewModel.start();
+    }
+
+    public void onPause() {
+        viewModel.stop();
+    }
+
+    public void onScrollToLast() {
+        viewModel.nextLoadIfNeed();
+    }
+
+    public void onClickNewPost() {
+        fragment.moveToNewPost();
+    }
+
 }

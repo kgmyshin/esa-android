@@ -9,8 +9,11 @@ import com.kgmyshin.esa.fragment.CommentsFragment;
 import com.kgmyshin.esa.fragment.LoginFragment;
 import com.kgmyshin.esa.fragment.PostFragment;
 import com.kgmyshin.esa.fragment.PostsFragment;
+import com.kgmyshin.esa.fragment.SplashFragment;
 
 public interface PresentationComponent {
+
+    void inject(SplashFragment fragment);
 
     void inject(LoginFragment fragment);
 

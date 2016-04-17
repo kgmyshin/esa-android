@@ -15,7 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.kgmyshin.esa.R;
 import com.kgmyshin.esa.fragment.LoginFragment;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements LoginFragment.ScreenTransition {
 
     public static Intent createIntent(Context context) {
         return new Intent(context, LoginActivity.class);
@@ -31,5 +31,11 @@ public class LoginActivity extends AppCompatActivity {
             ft.replace(R.id.container, fragment);
             ft.commit();
         }
+    }
+
+    @Override
+    public void moveToPosts() {
+        startActivity(PostsActivity.createIntent(this));
+        finish();
     }
 }

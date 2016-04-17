@@ -15,7 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.kgmyshin.esa.R;
 import com.kgmyshin.esa.fragment.PostsFragment;
 
-public class PostsActivity extends AppCompatActivity {
+public class PostsActivity extends AppCompatActivity implements PostsFragment.ScreenTransition {
 
     public static Intent createIntent(Context context) {
         return new Intent(context, PostsActivity.class);
@@ -25,7 +25,7 @@ public class PostsActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        if (savedInstanceState != null) {
+        if (savedInstanceState == null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             PostsFragment fragment = PostsFragment.newInstance();
             ft.replace(R.id.container, fragment);
@@ -33,4 +33,8 @@ public class PostsActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void moveToNewPost() {
+        startActivity(NewPostActivity.createIntent(this));
+    }
 }

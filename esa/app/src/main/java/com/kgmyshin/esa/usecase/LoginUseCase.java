@@ -6,9 +6,10 @@
 package com.kgmyshin.esa.usecase;
 
 import com.kgmyshin.esa.R;
-import com.kgmyshin.esa.data.api.v1.IApiClient;
+import com.kgmyshin.esa.data.api.v1.ApiClientFactory;
 import com.kgmyshin.esa.data.api.v1.response.TeamResponse;
-import com.kgmyshin.esa.data.pref.AccessTokenPreferences;
+import com.kgmyshin.esa.repository.AccessTokenRepository;
+import com.kgmyshin.esa.repository.TeamRepository;
 
 import java.io.IOException;
 
@@ -18,13 +19,15 @@ import retrofit2.Response;
 
 public class LoginUseCase {
 
-    private AccessTokenPreferences preferences;
-    private IApiClient client;
+    private AccessTokenRepository accessTokenRepository;
+    private TeamRepository teamRepository;
+    private ApiClientFactory factory;
 
     @Inject
-    public LoginUseCase(AccessTokenPreferences preferences, IApiClient client) {
-        this.preferences = preferences;
-        this.client = client;
+    public LoginUseCase(AccessTokenRepository accessTokenRepository, TeamRepository teamRepository, ApiClientFactory factory) {
+        this.accessTokenRepository = accessTokenRepository;
+        this.teamRepository = teamRepository;
+        this.factory = factory;
     }
 
     public Result login(String accessToken, String teamName) {
@@ -36,10 +39,9 @@ public class LoginUseCase {
             return Result.FAIL_EMPTY_TEAM_NAME;
         }
 
-        preferences.putAccessToken(accessToken);
         Result result;
         try {
-            Response<TeamResponse> response = client.validateTeamName(teamName).execute();
+            Response<TeamResponse> response = factory.createClient(accessToken).validateTeamName(teamName).execute();
             boolean isSuccessful = response.isSuccessful();
             int code = response.code();
             if (!isSuccessful && code == 404) {
@@ -55,8 +57,9 @@ public class LoginUseCase {
             e.printStackTrace();
             result = Result.FAIL_NETWORK;
         }
-        if (result != Result.SUCCESS) {
-            preferences.clear();
+        if (result == Result.SUCCESS) {
+            accessTokenRepository.save(accessToken);
+            teamRepository.save(teamName);
         }
         return result;
     }
@@ -86,8 +89,6 @@ public class LoginUseCase {
         public int getMessageResId() {
             return messageResId;
         }
-
-        ;
     }
 
 

@@ -24,6 +24,8 @@ import javax.inject.Inject;
 
 public class LoginFragment extends Fragment {
 
+    private ScreenTransition screenTransition;
+
     private EditText accessTokenEditText;
     private EditText teamNameEditText;
     private FrameLayout progressBarContainer;
@@ -41,6 +43,9 @@ public class LoginFragment extends Fragment {
         if (presenter == null) {
             ((Esa) context.getApplicationContext()).getComponent().inject(this);
             presenter.setFragment(this);
+        }
+        if (context instanceof ScreenTransition) {
+            screenTransition = (ScreenTransition) context;
         }
     }
 
@@ -87,6 +92,14 @@ public class LoginFragment extends Fragment {
         new AlertDialog.Builder(getContext())
                 .setMessage(messageResId)
                 .show();
+    }
+
+    public void moveToPosts() {
+        screenTransition.moveToPosts();
+    }
+
+    public interface ScreenTransition {
+        void moveToPosts();
     }
 
 }

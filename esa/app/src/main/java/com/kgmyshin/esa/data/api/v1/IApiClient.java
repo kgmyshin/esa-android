@@ -28,7 +28,7 @@ import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
-import rx.Observable;
+import rx.Single;
 
 public interface IApiClient {
 
@@ -36,22 +36,22 @@ public interface IApiClient {
     Call<TeamResponse> validateTeamName(@Path("team_name") String teamName);
 
     @GET("/v1/teams?per_page=100")
-    Observable<Response<List<TeamResponse>>> listTeams(@Query("page") int page);
+    Single<Response<List<TeamResponse>>> listTeams(@Query("page") int page);
 
     @GET("/v1/teams/{team_name}")
-    Observable<TeamResponse> findTeam(@Path("team_name") String teamName);
+    Single<TeamResponse> findTeam(@Path("team_name") String teamName);
 
     @GET("/v1/teams/{team_name}/stats")
-    Observable<TeamStatsResponse> findTeamStats(@Path("team_name") String teamName);
+    Single<TeamStatsResponse> findTeamStats(@Path("team_name") String teamName);
 
     @GET("/v1/teams/{team_name}/members?per_page=100")
-    Observable<MembersResponse> listMembers(@Path("team_name") String teamName, @Query("page") int page);
+    Single<MembersResponse> listMembers(@Path("team_name") String teamName, @Query("page") int page);
 
     @GET("/v1/teams/{team_name}/posts?per_page=100")
-    Observable<PostsResponse> listPosts(@Path("team_name") String teamName, @Query("page") int page);
+    Single<PostsResponse> listPosts(@Path("team_name") String teamName, @Query("page") int page);
 
     @GET("/v1/teams/{team_name}/posts/{post_number}")
-    Observable<PostResponse> findPost(@Path("team_name") String teamName, @Path("post_number") int postNumber);
+    Single<PostResponse> findPost(@Path("team_name") String teamName, @Path("post_number") int postNumber);
 
     @POST("/v1/teams/{team_name}/posts")
     Call<PostResponse> createPost(@Path("team_name") String teamName, @Body CreatePostRequest request);
@@ -63,10 +63,10 @@ public interface IApiClient {
     Call<Void> deletePost(@Path("team_name") String teamName, @Path("post_number") int postNumber);
 
     @GET("/v1/teams/{team_name}/posts/{post_number}/comments")
-    Observable<CommentsResponse> listComments(@Path("team_name") String teamName, @Path("post_number") int postNumber, @Query("page") int page);
+    Single<CommentsResponse> listComments(@Path("team_name") String teamName, @Path("post_number") int postNumber, @Query("page") int page);
 
     @GET("/v1/teams/{team_name}/comments/{comment_id}")
-    Observable<CommentResponse> findComment(@Path("team_name") String teamName, @Path("comment_id") int commentId);
+    Single<CommentResponse> findComment(@Path("team_name") String teamName, @Path("comment_id") int commentId);
 
     @POST("/v1/teams/{team_name}/posts/{post_number}/comments")
     Call<CommentResponse> createComment(@Path("team_name") String teamName, @Path("post_number") int postNumber, @Body CreateCommentRequest request);
