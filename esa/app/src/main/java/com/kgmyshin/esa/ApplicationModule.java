@@ -5,9 +5,10 @@
 
 package com.kgmyshin.esa;
 
+import android.app.Application;
+
 import org.greenrobot.eventbus.EventBus;
 
-import javax.inject.Named;
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -16,11 +17,21 @@ import dagger.Provides;
 @Module
 public class ApplicationModule {
 
+    private Application application;
+
+    public ApplicationModule(Application application) {
+        this.application = application;
+    }
+
     @Provides
-    @Named("event")
+    @Singleton
+    public Application provideApplication() {
+        return application;
+    }
+
+    @Provides
     @Singleton
     public EventBus provideEventBus() {
         return new EventBus();
     }
-
 }

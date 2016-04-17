@@ -18,33 +18,61 @@ import retrofit2.Response;
 
 public class LoginUseCase {
 
+    private AccessTokenPreferences preferences;
+    private IApiClient client;
+
     @Inject
-    AccessTokenPreferences preferences;
-    @Inject
-    IApiClient client;
+    public LoginUseCase(AccessTokenPreferences preferences, IApiClient client) {
+        this.preferences = preferences;
+        this.client = client;
+    }
 
     public Result login(String accessToken, String teamName) {
+
+        if (!validateAccessToken(accessToken)) {
+            return Result.FAIL_EMPTY_ACCESS_TOKEN;
+        }
+        if (!validateTeamName(teamName)) {
+            return Result.FAIL_EMPTY_TEAM_NAME;
+        }
+
         preferences.putAccessToken(accessToken);
+        Result result;
         try {
             Response<TeamResponse> response = client.validateTeamName(teamName).execute();
             boolean isSuccessful = response.isSuccessful();
             int code = response.code();
-            if (!isSuccessful && response.code() == 404) {
-                return Result.FAIL_NOT_FOUND_TEAM;
-            } else if (!isSuccessful && response.code() == 403) {
-                return Result.FAIL_UNAUTHORIZED;
+            if (!isSuccessful && code == 404) {
+                result = Result.FAIL_NOT_FOUND_TEAM;
+            } else if (!isSuccessful && code == 401) {
+                result = Result.FAIL_UNAUTHORIZED;
             } else if (!isSuccessful) {
-                return Result.FAIL_OTHER;
+                result = Result.FAIL_OTHER;
+            } else {
+                result = Result.SUCCESS;
             }
         } catch (IOException e) {
             e.printStackTrace();
-            return Result.FAIL_NETWORK;
+            result = Result.FAIL_NETWORK;
         }
-        return Result.SUCCESS;
+        if (result != Result.SUCCESS) {
+            preferences.clear();
+        }
+        return result;
+    }
+
+    private boolean validateAccessToken(String accessToken) {
+        return accessToken != null && !accessToken.isEmpty();
+    }
+
+    private boolean validateTeamName(String teamName) {
+        return teamName != null && !teamName.isEmpty();
     }
 
     public enum Result {
         SUCCESS(R.string.login__success),
+        FAIL_EMPTY_ACCESS_TOKEN(R.string.login__fail_empty_access_token),
+        FAIL_EMPTY_TEAM_NAME(R.string.login__fail_empty_team_name),
         FAIL_NOT_FOUND_TEAM(R.string.login__fail_not_found_team),
         FAIL_UNAUTHORIZED(R.string.login__fail_unauthorized),
         FAIL_NETWORK(R.string.login__fail_network),
@@ -55,7 +83,7 @@ public class LoginUseCase {
             this.messageResId = messageResId;
         }
 
-        public int getMssageResId() {
+        public int getMessageResId() {
             return messageResId;
         }
 

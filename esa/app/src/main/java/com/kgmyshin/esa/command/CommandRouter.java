@@ -9,6 +9,7 @@ import com.kgmyshin.esa.command.handler.CreateCommentCommandHandler;
 import com.kgmyshin.esa.command.handler.CreatePostCommandHandler;
 import com.kgmyshin.esa.command.handler.DeleteCommentCommandHandler;
 import com.kgmyshin.esa.command.handler.DeletePostCommandHandler;
+import com.kgmyshin.esa.command.handler.LoginCommandHandler;
 import com.kgmyshin.esa.command.handler.UpdateCommentCommandHandler;
 import com.kgmyshin.esa.command.handler.UpdatePostCommandHandler;
 
@@ -17,29 +18,32 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 
 public class CommandRouter {
 
-    @Inject
-    @Named("command")
-    EventBus commandBus;
+    private EventBus eventBus;
+    private CreateCommentCommandHandler createCommentCommandHandler;
+    private CreatePostCommandHandler createPostCommandHandler;
+    private DeleteCommentCommandHandler deleteCommentCommandHandler;
+    private DeletePostCommandHandler deletePostCommandHandler;
+    private UpdateCommentCommandHandler updateCommentCommandHandler;
+    private UpdatePostCommandHandler updatePostCommandHandler;
+    private LoginCommandHandler loginCommandHandler;
 
     @Inject
-    CreateCommentCommandHandler createCommentCommandHandler;
-    @Inject
-    CreatePostCommandHandler createPostCommandHandler;
-    @Inject
-    DeleteCommentCommandHandler deleteCommentCommandHandler;
-    @Inject
-    DeletePostCommandHandler deletePostCommandHandler;
-    @Inject
-    UpdateCommentCommandHandler updateCommentCommandHandler;
-    @Inject
-    UpdatePostCommandHandler updatePostCommandHandler;
+    public CommandRouter(EventBus eventBus, CreateCommentCommandHandler createCommentCommandHandler, CreatePostCommandHandler createPostCommandHandler, DeleteCommentCommandHandler deleteCommentCommandHandler, DeletePostCommandHandler deletePostCommandHandler, UpdateCommentCommandHandler updateCommentCommandHandler, UpdatePostCommandHandler updatePostCommandHandler, LoginCommandHandler loginCommandHandler) {
+        this.eventBus = eventBus;
+        this.createCommentCommandHandler = createCommentCommandHandler;
+        this.createPostCommandHandler = createPostCommandHandler;
+        this.deleteCommentCommandHandler = deleteCommentCommandHandler;
+        this.deletePostCommandHandler = deletePostCommandHandler;
+        this.updateCommentCommandHandler = updateCommentCommandHandler;
+        this.updatePostCommandHandler = updatePostCommandHandler;
+        this.loginCommandHandler = loginCommandHandler;
+    }
 
     public void start() {
-        commandBus.register(this);
+        eventBus.register(this);
     }
 
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
@@ -70,6 +74,11 @@ public class CommandRouter {
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
     public void receive(UpdatePostCommand command) {
         updatePostCommandHandler.execute(command);
+    }
+
+    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    public void receive(LoginCommand command) {
+        loginCommandHandler.execute(command);
     }
 
 }

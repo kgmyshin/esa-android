@@ -20,6 +20,7 @@ import com.kgmyshin.esa.data.api.v1.response.TeamStatsResponse;
 import java.util.List;
 
 import retrofit2.Call;
+import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
@@ -35,7 +36,7 @@ public interface IApiClient {
     Call<TeamResponse> validateTeamName(@Path("team_name") String teamName);
 
     @GET("/v1/teams?per_page=100")
-    Observable<List<TeamResponse>> listTeams(@Query("page") int page);
+    Observable<Response<List<TeamResponse>>> listTeams(@Query("page") int page);
 
     @GET("/v1/teams/{team_name}")
     Observable<TeamResponse> findTeam(@Path("team_name") String teamName);

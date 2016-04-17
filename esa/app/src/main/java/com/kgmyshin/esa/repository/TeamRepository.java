@@ -16,8 +16,12 @@ import rx.functions.Func1;
 
 public class TeamRepository {
 
+    private IApiClient client;
+
     @Inject
-    IApiClient client;
+    public TeamRepository(IApiClient client) {
+        this.client = client;
+    }
 
     public Observable<Team> findByName(String name) {
         return client.findTeam(name).map(new Func1<TeamResponse, Team>() {

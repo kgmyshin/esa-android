@@ -11,8 +11,6 @@ import com.kgmyshin.esa.data.pref.AccessTokenPreferences;
 
 import java.io.IOException;
 
-import javax.inject.Inject;
-
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -23,8 +21,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public final class ApiClientFactory {
 
-    @Inject
-    AccessTokenPreferences preferences;
+    private AccessTokenPreferences preferences;
+
+    public ApiClientFactory(AccessTokenPreferences preferences) {
+        this.preferences = preferences;
+    }
 
     private static final String BASE_URL = "https://api.esa.io";
 
@@ -32,20 +33,15 @@ public final class ApiClientFactory {
         return createRetrofit().create(IApiClient.class);
     }
 
-    public IApiObservableClient createObservableClient() {
-        return createRetrofit().create(IApiObservableClient.class);
-    }
-
     private Retrofit createRetrofit() {
-        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-ddTHH:mm:ss+09:00").create();
-        OkHttpClient client = new OkHttpClient();
-        client.interceptors().add(new Interceptor() {
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss+09:00").create();
+        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
             @Override
             public Response intercept(Chain chain) throws IOException {
-                Request request = chain.request().newBuilder().header("Authorization", preferences.getAccessToken()).build();
+                Request request = chain.request().newBuilder().header("Authorization", "Bearer " + preferences.getAccessToken()).build();
                 return chain.proceed(request);
             }
-        });
+        }).build();
         return new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())

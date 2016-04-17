@@ -5,7 +5,32 @@
 
 package com.kgmyshin.esa.activity;
 
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
+import com.kgmyshin.esa.R;
+import com.kgmyshin.esa.fragment.PostsFragment;
+
 public class PostsActivity extends AppCompatActivity {
+
+    public static Intent createIntent(Context context) {
+        return new Intent(context, PostsActivity.class);
+    }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
+        if (savedInstanceState != null) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            PostsFragment fragment = PostsFragment.newInstance();
+            ft.replace(R.id.container, fragment);
+            ft.commit();
+        }
+    }
+
 }

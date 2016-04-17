@@ -14,23 +14,27 @@ import org.greenrobot.eventbus.EventBus;
 import java.io.IOException;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 
 public class DeleteCommentCommandHandler extends CommandHandler<DeleteCommentCommand> {
 
+    private CommentRepositoryFactory repositoryFactory;
+    private EventBus eventBus;
+
     @Inject
-    CommentRepositoryFactory repositoryFactory;
-    @Inject
-    @Named("event")
-    EventBus eventBus;
+    public DeleteCommentCommandHandler(CommentRepositoryFactory repositoryFactory, EventBus eventBus) {
+        this.repositoryFactory = repositoryFactory;
+        this.eventBus = eventBus;
+    }
 
     @Override
     public void execute(DeleteCommentCommand command) {
         CommentRepository repository = repositoryFactory.create(command.getTeamName(), command.getPostNumber());
         try {
             repository.delete(command.getId());
+            eventBus.postSticky(new DeleteCommentCommand.CommentDeletedEvent());
         } catch (IOException e) {
             e.printStackTrace();
+            eventBus.postSticky(new DeleteCommentCommand.FailedDeleteCommentEvent());
         }
     }
 }

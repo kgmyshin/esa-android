@@ -14,25 +14,27 @@ import org.greenrobot.eventbus.EventBus;
 import java.io.IOException;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 
 public class CreateCommentCommandHandler extends CommandHandler<CreateCommentCommand> {
 
+    private CommentRepositoryFactory repositoryFactory;
+    private EventBus eventBus;
+
     @Inject
-    CommentRepositoryFactory repositoryFactory;
-    @Inject
-    @Named("event")
-    EventBus eventBus;
+    public CreateCommentCommandHandler(CommentRepositoryFactory repositoryFactory, EventBus eventBus) {
+        this.repositoryFactory = repositoryFactory;
+        this.eventBus = eventBus;
+    }
 
     @Override
     public void execute(CreateCommentCommand command) {
         CommentRepository repository = repositoryFactory.create(command.getTeamName(), command.getPostNumber());
         try {
             int commentId = repository.create(command.getBodyMd(), command.getUser());
-            eventBus.post(new CreateCommentCommand.CommentCreatedEvent(commentId));
+            eventBus.postSticky(new CreateCommentCommand.CommentCreatedEvent(commentId));
         } catch (IOException e) {
             e.printStackTrace();
-            eventBus.post(new CreateCommentCommand.FailedCrateCommentEvent());
+            eventBus.postSticky(new CreateCommentCommand.FailedCrateCommentEvent());
         }
     }
 }

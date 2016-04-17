@@ -13,8 +13,12 @@ import dagger.Lazy;
 
 public class CommentRepositoryFactory {
 
+    private Lazy<IApiClient> apiClient;
+
     @Inject
-    Lazy<IApiClient> apiClient;
+    public CommentRepositoryFactory(Lazy<IApiClient> apiClient) {
+        this.apiClient = apiClient;
+    }
 
     public CommentRepository create(String teamName, int postNumber) {
         return new CommentRepository(apiClient.get(), teamName, postNumber);

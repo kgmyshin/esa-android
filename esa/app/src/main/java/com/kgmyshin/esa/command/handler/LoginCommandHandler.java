@@ -11,23 +11,25 @@ import com.kgmyshin.esa.usecase.LoginUseCase;
 import org.greenrobot.eventbus.EventBus;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 
 public class LoginCommandHandler extends CommandHandler<LoginCommand> {
 
+    private LoginUseCase loginUseCase;
+    private EventBus eventBus;
+
     @Inject
-    LoginUseCase loginUseCase;
-    @Inject
-    @Named("event")
-    EventBus eventBus;
+    public LoginCommandHandler(LoginUseCase loginUseCase, EventBus eventBus) {
+        this.loginUseCase = loginUseCase;
+        this.eventBus = eventBus;
+    }
 
     @Override
     public void execute(LoginCommand command) {
         LoginUseCase.Result result = loginUseCase.login(command.getAccessToken(), command.getTeam());
         if (result == LoginUseCase.Result.SUCCESS) {
-            eventBus.post(new LoginCommand.SuccessLoginEvent());
+            eventBus.postSticky(new LoginCommand.SuccessLoginEvent());
         } else {
-            eventBus.post(new LoginCommand.FailedLoginEvent(result.getMssageResId()));
+            eventBus.postSticky(new LoginCommand.FailedLoginEvent(result.getMessageResId()));
         }
     }
 }

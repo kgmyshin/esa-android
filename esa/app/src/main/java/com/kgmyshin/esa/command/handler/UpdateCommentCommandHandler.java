@@ -14,15 +14,17 @@ import org.greenrobot.eventbus.EventBus;
 import java.io.IOException;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 
 public class UpdateCommentCommandHandler extends CommandHandler<UpdateCommentCommand> {
 
+    private CommentRepositoryFactory repositoryFactory;
+    private EventBus eventBus;
+
     @Inject
-    CommentRepositoryFactory repositoryFactory;
-    @Inject
-    @Named("event")
-    EventBus eventBus;
+    public UpdateCommentCommandHandler(CommentRepositoryFactory repositoryFactory, EventBus eventBus) {
+        this.repositoryFactory = repositoryFactory;
+        this.eventBus = eventBus;
+    }
 
     @Override
     public void execute(UpdateCommentCommand command) {
@@ -33,10 +35,10 @@ public class UpdateCommentCommandHandler extends CommandHandler<UpdateCommentCom
                     command.getBodyMd(),
                     command.getUser()
             );
-            eventBus.post(new UpdateCommentCommand.CommentUpdatedEvent());
+            eventBus.postSticky(new UpdateCommentCommand.CommentUpdatedEvent());
         } catch (IOException e) {
             e.printStackTrace();
-            eventBus.post(new UpdateCommentCommand.FailedUpdateCommentEvent());
+            eventBus.postSticky(new UpdateCommentCommand.FailedUpdateCommentEvent());
         }
     }
 }

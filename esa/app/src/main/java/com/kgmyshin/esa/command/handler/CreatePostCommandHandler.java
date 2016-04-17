@@ -14,15 +14,17 @@ import org.greenrobot.eventbus.EventBus;
 import java.io.IOException;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 
 public class CreatePostCommandHandler extends CommandHandler<CreatePostCommand> {
 
+    private PostRepositoryFactory repositoryFactory;
+    private EventBus eventBus;
+
     @Inject
-    PostRepositoryFactory repositoryFactory;
-    @Inject
-    @Named("event")
-    EventBus eventBus;
+    public CreatePostCommandHandler(PostRepositoryFactory repositoryFactory, EventBus eventBus) {
+        this.repositoryFactory = repositoryFactory;
+        this.eventBus = eventBus;
+    }
 
     @Override
     public void execute(CreatePostCommand command) {
@@ -37,10 +39,10 @@ public class CreatePostCommandHandler extends CommandHandler<CreatePostCommand> 
                     command.getMessage(),
                     command.getUser()
             );
-            eventBus.post(new CreatePostCommand.PostCreatedEvent(postNumber));
+            eventBus.postSticky(new CreatePostCommand.PostCreatedEvent(postNumber));
         } catch (IOException e) {
             e.printStackTrace();
-            eventBus.post(new CreatePostCommand.FailedCreatePostEvent());
+            eventBus.postSticky(new CreatePostCommand.FailedCreatePostEvent());
         }
     }
 }

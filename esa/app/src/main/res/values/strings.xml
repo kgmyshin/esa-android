@@ -2,8 +2,13 @@
     <string name="app_name">esa</string>
 
     <string name="login__success">成功しました</string>
+    <string name="login__fail_empty_access_token">アクセストークンが空です。</string>
+    <string name="login__fail_empty_team_name">チーム名が空です。</string>
     <string name="login__fail_network">通信エラーが発生しました。通信環境をご確認の上、もう一度お試しください。</string>
     <string name="login__fail_not_found_team">チームが見つかりません。</string>
     <string name="login__fail_unauthorized">認証に失敗しました。アクセストークンを確認してください。</string>
     <string name="login__fail_other">エラーが発生しました。</string>
+    <string name="login__access_token">Access Token</string>
+    <string name="login__team_name">Team Name</string>
+    <string name="login__login">Login</string>
 </resources>

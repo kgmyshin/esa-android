@@ -13,8 +13,12 @@ import dagger.Lazy;
 
 public class PostRepositoryFactory {
 
+    private Lazy<IApiClient> apiClient;
+
     @Inject
-    Lazy<IApiClient> apiClient;
+    public PostRepositoryFactory(Lazy<IApiClient> apiClient) {
+        this.apiClient = apiClient;
+    }
 
     public PostRepository create(String teamName) {
         return new PostRepository(apiClient.get(), teamName);

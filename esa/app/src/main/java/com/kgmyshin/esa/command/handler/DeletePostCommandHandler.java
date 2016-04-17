@@ -14,25 +14,27 @@ import org.greenrobot.eventbus.EventBus;
 import java.io.IOException;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 
 public class DeletePostCommandHandler extends CommandHandler<DeletePostCommand> {
 
+    private PostRepositoryFactory repositoryFactory;
+    private EventBus eventBus;
+
     @Inject
-    PostRepositoryFactory repositoryFactory;
-    @Inject
-    @Named("event")
-    EventBus eventBus;
+    public DeletePostCommandHandler(PostRepositoryFactory repositoryFactory, EventBus eventBus) {
+        this.repositoryFactory = repositoryFactory;
+        this.eventBus = eventBus;
+    }
 
     @Override
     public void execute(DeletePostCommand command) {
         PostRepository repository = repositoryFactory.create(command.getTeamName());
         try {
             repository.delete(command.getId());
-            eventBus.post(new DeletePostCommand.PostDeletedEvent());
+            eventBus.postSticky(new DeletePostCommand.PostDeletedEvent());
         } catch (IOException e) {
             e.printStackTrace();
-            eventBus.post(new DeletePostCommand.FailedDeletePostEvent());
+            eventBus.postSticky(new DeletePostCommand.FailedDeletePostEvent());
         }
     }
 }
