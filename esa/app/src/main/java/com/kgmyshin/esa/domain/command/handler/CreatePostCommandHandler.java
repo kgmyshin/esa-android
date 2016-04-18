@@ -8,6 +8,7 @@ package com.kgmyshin.esa.domain.command.handler;
 import com.kgmyshin.esa.domain.command.CreatePostCommand;
 import com.kgmyshin.esa.domain.repository.PostRepository;
 import com.kgmyshin.esa.domain.repository.PostRepositoryFactory;
+import com.kgmyshin.esa.domain.repository.TeamRepository;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -17,18 +18,20 @@ import javax.inject.Inject;
 
 public class CreatePostCommandHandler extends CommandHandler<CreatePostCommand> {
 
+    private TeamRepository teamRepository;
     private PostRepositoryFactory repositoryFactory;
     private EventBus eventBus;
 
     @Inject
-    public CreatePostCommandHandler(PostRepositoryFactory repositoryFactory, EventBus eventBus) {
+    public CreatePostCommandHandler(TeamRepository teamRepository, PostRepositoryFactory repositoryFactory, EventBus eventBus) {
+        this.teamRepository = teamRepository;
         this.repositoryFactory = repositoryFactory;
         this.eventBus = eventBus;
     }
 
     @Override
     public void execute(CreatePostCommand command) {
-        PostRepository repository = repositoryFactory.create(command.getTeamName());
+        PostRepository repository = repositoryFactory.create(teamRepository.find());
         try {
             int postNumber = repository.create(
                     command.getName(),

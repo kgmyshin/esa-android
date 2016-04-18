@@ -11,4 +11,10 @@
     <string name="login__access_token">Access Token</string>
     <string name="login__team_name">Team Name</string>
     <string name="login__login">Login</string>
+    <string name="new_post__title">Title</string>
+    <string name="new_post__body">body</string>
+    <string name="new_post__save">save</string>
+
+    <string name="error＿_network">通信エラーが発生しました。通信環境をご確認の上、もう一度お試しください。</string>
+
 </resources>

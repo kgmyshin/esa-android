@@ -9,7 +9,6 @@ import java.util.List;
 
 public class CreatePostCommand extends Command {
 
-    private final String teamName;
     private final String name;
     private final String bodyMd;
     private final List<String> tags;
@@ -18,8 +17,7 @@ public class CreatePostCommand extends Command {
     private final String message;
     private final String user;
 
-    public CreatePostCommand(String teamName, String name, String bodyMd, List<String> tags, String category, boolean isWip, String message, String user) {
-        this.teamName = teamName;
+    public CreatePostCommand(String name, String bodyMd, List<String> tags, String category, boolean isWip, String message, String user) {
         this.name = name;
         this.bodyMd = bodyMd;
         this.tags = tags;
@@ -27,10 +25,6 @@ public class CreatePostCommand extends Command {
         this.isWip = isWip;
         this.message = message;
         this.user = user;
-    }
-
-    public String getTeamName() {
-        return teamName;
     }
 
     public String getName() {

@@ -13,11 +13,9 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.FrameLayout;
 
 import com.kgmyshin.esa.Esa;
-import com.kgmyshin.esa.R;
+import com.kgmyshin.esa.databinding.FragmentLoginBinding;
 import com.kgmyshin.esa.presentation.presenter.LoginPresenter;
 
 import javax.inject.Inject;
@@ -26,9 +24,7 @@ public class LoginFragment extends Fragment {
 
     private ScreenTransition screenTransition;
 
-    private EditText accessTokenEditText;
-    private EditText teamNameEditText;
-    private FrameLayout progressBarContainer;
+    private FragmentLoginBinding binding;
 
     @Inject
     LoginPresenter presenter;
@@ -52,20 +48,19 @@ public class LoginFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_login, container, false);
+        binding = FragmentLoginBinding.inflate(inflater, container, false);
 
-        accessTokenEditText = (EditText) view.findViewById(R.id.access_token_edit_text);
-        teamNameEditText = (EditText) view.findViewById(R.id.team_name_edit_text);
-        progressBarContainer = (FrameLayout) view.findViewById(R.id.progressbar_container);
-
-        view.findViewById(R.id.login_button).setOnClickListener(new View.OnClickListener() {
+        binding.loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.onClickLogin(accessTokenEditText.getText().toString(), teamNameEditText.getText().toString());
+                presenter.onClickLogin(
+                        binding.accessTokenEditText.getText().toString(),
+                        binding.teamNameEditText.getText().toString()
+                );
             }
         });
 
-        return view;
+        return binding.getRoot();
     }
 
     @Override
@@ -81,11 +76,11 @@ public class LoginFragment extends Fragment {
     }
 
     public void showLoading() {
-        progressBarContainer.setVisibility(View.VISIBLE);
+        binding.progressbarContainer.setVisibility(View.VISIBLE);
     }
 
     public void dismissLoading() {
-        progressBarContainer.setVisibility(View.GONE);
+        binding.progressbarContainer.setVisibility(View.GONE);
     }
 
     public void showErrorDialog(int messageResId) {

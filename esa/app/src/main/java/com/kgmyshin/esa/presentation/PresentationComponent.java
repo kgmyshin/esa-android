@@ -7,6 +7,7 @@ package com.kgmyshin.esa.presentation;
 
 import com.kgmyshin.esa.presentation.fragment.CommentsFragment;
 import com.kgmyshin.esa.presentation.fragment.LoginFragment;
+import com.kgmyshin.esa.presentation.fragment.NewPostFragment;
 import com.kgmyshin.esa.presentation.fragment.PostFragment;
 import com.kgmyshin.esa.presentation.fragment.PostsFragment;
 import com.kgmyshin.esa.presentation.fragment.SplashFragment;
@@ -22,5 +23,7 @@ public interface PresentationComponent {
     void inject(PostsFragment fragment);
 
     void inject(PostFragment fragment);
+
+    void inject(NewPostFragment fragment);
 
 }
